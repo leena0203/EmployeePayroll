@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class EmployeePayrollService {
+	public enum IOService{CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
+
 	List<EmployeePayrollData> employeePayrollList;
 
 	public EmployeePayrollService(List<EmployeePayrollData> employeePayrollList) {
@@ -15,12 +17,15 @@ public class EmployeePayrollService {
 		EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
 		Scanner consoleInputReader = new Scanner(System.in);
 		employeePayrollService.readEmployeePayrollData(consoleInputReader);
-		employeePayrollService.writeEmployeePayrollData();
+		employeePayrollService.writeEmployeePayrollData(IOService.CONSOLE_IO);
 	}
-	private void writeEmployeePayrollData() {
+	public void writeEmployeePayrollData(IOService ioService) {
+		if (ioService.equals(IOService.CONSOLE_IO))
 		System.out.println("Writing Employee Payroll Roaster to console\n " +employeePayrollList);// TODO Auto-generated method stub
+		else if(ioService.equals(IOService.FILE_IO))
+			new EmployeePayrollFileIOservice().writeData(employeePayrollList);
 	}
-	private void readEmployeePayrollData(Scanner consoleInputReader) {
+	public void readEmployeePayrollData(Scanner consoleInputReader) {
 		System.out.println("Enter Employee Id: ");
 		int id = consoleInputReader.nextInt();
 		System.out.println("Enter Employee Name: ");
@@ -28,6 +33,13 @@ public class EmployeePayrollService {
 		System.out.println("Enter Employee Salary: ");
 		double salary = consoleInputReader.nextDouble();
 		employeePayrollList.add(new EmployeePayrollData(id, name, salary));
+	}
+	public long countEntries(IOService fileIo) {
+		long entries = 0;
+		if (fileIo.equals(IOService.FILE_IO)) {
+			entries = new EmployeePayrollFileIOservice().countEntries();
+		}
+		return entries;
 	}
 
 }
