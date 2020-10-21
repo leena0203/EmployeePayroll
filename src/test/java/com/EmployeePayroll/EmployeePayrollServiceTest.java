@@ -7,9 +7,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 class EmployeePayrollServiceTest {
-
+	public static EmployeePayrollService test;
 	@Test
-	public void given3Employee_WhenWrittenToFile_ShouldMatchEmployeeEntries() {
+	public void given3Employee_whenWrittenToFile_shouldMatchEmployeeEntries() {
 		EmployeePayrollData[] arrayOfEmps = {
 				new EmployeePayrollData(1, "Sneha", 12000.0),
 				new EmployeePayrollData(2, "Meena", 15000.0),
@@ -21,7 +21,13 @@ class EmployeePayrollServiceTest {
 		test.printData(EmployeePayrollService.IOService.FILE_IO);
 		long entries = test.countEntries(EmployeePayrollService.IOService.FILE_IO);
 		assertEquals(3, entries);
-	
-	}
 
+	}
+	@Test
+	public void givenFile_onReadingFromFile_shouldMatchEmployeeCount() {
+		test.readEmployeePayrollData(EmployeePayrollService.IOService.FILE_IO);
+		long entries = test.countEntries(EmployeePayrollService.IOService.FILE_IO);
+		assertEquals(3, entries);
+
+	}
 }
